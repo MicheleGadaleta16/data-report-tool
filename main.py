@@ -5,7 +5,9 @@
 
 import argparse
 import logging
-
+from src.fetcher import fetch_data
+from src.processor import process_data
+from src.reporter import generate_report
 
 parser = argparse.ArgumentParser(prog='datareporttool',
                                  description='Download data from an URL', epilog='Thank you for choose us!')
@@ -22,6 +24,18 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+# 1. già fatto — args.url e args.output
+
+# 2. scarica
+df = fetch_data(args.url)
+
+# 3. pulisci
+df = process_data(df)
+
+# 4. genera report
+generate_report(df, args.output)
+
 logger = logging.getLogger(__name__)
 logger.info("Download iniziato")
 logger.error("URL non valido")
